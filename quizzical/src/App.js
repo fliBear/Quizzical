@@ -1,25 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import "./Styles/styles.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="container">
+            <div className="yellow-blob"></div>
+            <div className="pink-blob"></div>
+            <main>
+                <h1 className="title">Quizzical</h1>
+                <p className="description">Click Start quiz to get graded.</p>
+                <button className="btn action-btn">Start quiz</button>
+            </main>
+        </div>
+    );
 }
 
 export default App;
