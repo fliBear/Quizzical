@@ -1,14 +1,20 @@
+import { useState } from "react";
 import "./Styles/styles.css";
+import Blobs from "./Components/Blobs";
+import StartScreen from "./Components/StartScreen";
 
 function App() {
+    const [start, setStart] = useState(false);
+
     return (
-        <div className="container">
-            <div className="yellow-blob"></div>
-            <div className="pink-blob"></div>
+        <div>
+            <Blobs start={start}></Blobs>
             <main>
-                <h1 className="title">Quizzical</h1>
-                <p className="description">Click Start quiz to get graded.</p>
-                <button className="btn action-btn">Start quiz</button>
+                {start ? (
+                    <div></div>
+                ) : (
+                    <StartScreen setStart={setStart}></StartScreen>
+                )}
             </main>
         </div>
     );
