@@ -9,33 +9,81 @@ export default function Quiz() {
             "https://opentdb.com/api.php?amount=5&category=9&difficulty=medium&type=multiple"
         )
             .then((res) => res.json())
-            .then((data) => setQuizData(data.results))
+            .then((data) => {
+                const allQuizData = data.results.map((data) => {
+                    return {
+                        question: data.question,
+                        correct_answer: data.correct_answer,
+                        all_answers: generateAllAnswersArr([
+                            ...data.incorrect_answers,
+                            data.correct_answer,
+                        ]),
+                        id: nanoid(),
+                    };
+                });
+                setQuizData(allQuizData);
+            })
             .catch((err) => console.log(err));
     }, []);
 
+    function generateAllAnswersArr(arr) {
+        return randomizeArray(
+            arr.map((el) => {
+                return { value: el, selected: false };
+            })
+        );
+    }
+
     const questions = quizData.map((questionData) => {
         return (
-            <div key={nanoid()} className="question-container">
-                <h2>{parseSpecialChars(questionData.question)}</h2>
-                {generateAnswers(questionData)}
+            <div
+                key={questionData.id}
+                className="question-container question-text"
+            >
+                <h3>{parseSpecialChars(questionData.question)}</h3>
+                {generateAnswers(questionData.all_answers, questionData.id)}
             </div>
         );
     });
 
-    function generateAnswers(questionData) {
-        let arr = randomizeArray([
-            ...questionData.incorrect_answers,
-            questionData.correct_answer,
-        ]);
+    function generateAnswers(arr, questionId) {
         return (
             <div>
                 {arr.map((ans) => {
                     return (
-                        <button key={nanoid()}>{parseSpecialChars(ans)}</button>
+                        <button
+                            key={nanoid()}
+                            className={`btn ans-btn ${
+                                ans.selected ? "ans-selected" : ""
+                            }`}
+                            onClick={() => chooseAnswer(ans, questionId)}
+                        >
+                            {parseSpecialChars(ans.value)}
+                        </button>
                     );
                 })}
             </div>
         );
+    }
+
+    function chooseAnswer(answer, questionId) {
+        setQuizData((oldData) => {
+            return oldData.map((data) => {
+                return data.id === questionId
+                    ? {
+                          ...data,
+                          all_answers: data.all_answers.map((oldAns) => {
+                              return oldAns.value === answer.value
+                                  ? {
+                                        ...oldAns,
+                                        selected: !oldAns.selected,
+                                    }
+                                  : { ...oldAns };
+                          }),
+                      }
+                    : { ...data };
+            });
+        });
     }
 
     function randomizeArray(arr) {
@@ -54,10 +102,10 @@ export default function Quiz() {
         return decodedString;
     }
 
-    return <div>{questions}</div>;
+    return (
+        <div className="flex flex-column">
+            {questions}
+            <button className="btn action-btn">Check answers</button>
+        </div>
+    );
 }
-
-/*
-prikazi podatke
-
-*/
