@@ -101,3 +101,12 @@ p {
         top: -40%;
     }
 }
+
+/* Question screen */
+/*-------------------------------*/
+.question-container {
+    border-bottom-style: solid;
+    border-bottom-color: rgb(240, 202, 228);
+    border-bottom-width: 2px;
+    padding: 1em;
+}
