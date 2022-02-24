@@ -3,8 +3,16 @@ import { nanoid } from "nanoid";
 
 export default function Quiz() {
     const [quizData, setQuizData] = useState([]);
+    const [quizState, setQuizState] = useState({
+        finished: false,
+        correct: 0,
+    });
 
     useEffect(() => {
+        fetchAndSetData();
+    }, []);
+
+    function fetchAndSetData() {
         fetch(
             "https://opentdb.com/api.php?amount=5&category=9&difficulty=medium&type=multiple"
         )
@@ -24,7 +32,7 @@ export default function Quiz() {
                 setQuizData(allQuizData);
             })
             .catch((err) => console.log(err));
-    }, []);
+    }
 
     function generateAllAnswersArr(arr) {
         return randomizeArray(
@@ -41,12 +49,16 @@ export default function Quiz() {
                 className="question-container question-text"
             >
                 <h3>{parseSpecialChars(questionData.question)}</h3>
-                {generateAnswers(questionData.all_answers, questionData.id)}
+                {generateAnswers(
+                    questionData.all_answers,
+                    questionData.id,
+                    questionData.correct_answer
+                )}
             </div>
         );
     });
 
-    function generateAnswers(arr, questionId) {
+    function generateAnswers(arr, questionId, correct) {
         return (
             <div>
                 {arr.map((ans) => {
@@ -55,6 +67,10 @@ export default function Quiz() {
                             key={nanoid()}
                             className={`btn ans-btn ${
                                 ans.selected ? "ans-selected" : ""
+                            } ${
+                                quizState.finished && ans.value === correct
+                                    ? "ans-correct"
+                                    : ""
                             }`}
                             onClick={() => chooseAnswer(ans, questionId)}
                         >
@@ -86,6 +102,28 @@ export default function Quiz() {
         });
     }
 
+    function finishQuiz() {
+        if (quizState.finished) {
+            setQuizState({ finished: false, correct: 0 });
+            fetchAndSetData();
+        } else {
+            setQuizState((oldState) => {
+                return {
+                    finished: true,
+                    correct: quizData.filter((question) => {
+                        const ansCorrect = question.all_answers.some((ans) => {
+                            return (
+                                ans.value === question.correct_answer &&
+                                ans.selected
+                            );
+                        });
+                        return ansCorrect;
+                    }).length,
+                };
+            });
+        }
+    }
+
     function randomizeArray(arr) {
         return arr
             .map((value) => ({ value, sort: Math.random() }))
@@ -105,7 +143,17 @@ export default function Quiz() {
     return (
         <div className="flex flex-column">
             {questions}
-            <button className="btn action-btn">Check answers</button>
+            <div className="result">
+                {quizState.finished && (
+                    <span className="result-txt">
+                        You scored {quizState.correct} / {quizData.length}{" "}
+                        correct answers
+                    </span>
+                )}
+                <button className="btn action-btn" onClick={finishQuiz}>
+                    {quizState.finished ? "Play again" : "Check answers"}
+                </button>
+            </div>
         </div>
     );
 }

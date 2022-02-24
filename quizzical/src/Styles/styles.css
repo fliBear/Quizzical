@@ -68,7 +68,7 @@ p {
     padding-top: 0.2em;
     padding-bottom: 0.2em;
     font-size: 2.4vh;
-    transition: font-size 0.6s;
+    transition: font-size 0.4s;
 }
 
 .action-btn {
@@ -120,14 +120,15 @@ p {
 
 .question-text {
     font-size: 2.3vh;
-    transition: font-size 0.6s;
+    transition: font-size 0.4s;
 }
 
 .ans-btn {
     margin-right: 1em;
+    margin-bottom: 0.3em;
     font-size: 1.6vh;
     cursor: pointer;
-    transition: font-size 0.6s;
+    transition: font-size 0.4s;
 }
 
 .ans-selected {
@@ -138,6 +139,28 @@ p {
     background-color: rgb(204, 135, 182);
 }
 
+.ans-correct {
+    background-color: green;
+}
+
+/* Question screen */
+/*-------------------------------*/
+.result {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+
+.result-txt {
+    font-size: 2.4vh;
+    transition: font-size 0.4s;
+    font-weight: 700;
+}
+
+/* Media css */
+/*-------------------------------*/
 @media screen and (max-width: 700px) {
     .pink-blob-quiz {
         left: -20%;
@@ -161,8 +184,10 @@ p {
     }
 
     .ans-btn {
-        margin-right: 1em;
         font-size: 1.5vh;
-        cursor: pointer;
+    }
+
+    .result-txt {
+        font-size: 1.6vh;
     }
 }
