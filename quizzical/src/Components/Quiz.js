@@ -78,7 +78,7 @@ export default function Quiz() {
                                         ...oldAns,
                                         selected: !oldAns.selected,
                                     }
-                                  : { ...oldAns };
+                                  : { ...oldAns, selected: false };
                           }),
                       }
                     : { ...data };

@@ -68,6 +68,7 @@ p {
     padding-top: 0.2em;
     padding-bottom: 0.2em;
     font-size: 2.4vh;
+    transition: font-size 0.6s;
 }
 
 .action-btn {
@@ -90,19 +91,6 @@ p {
 
 .description {
     color: #293264;
-}
-
-@media screen and (max-width: 700px) {
-    .pink-blob-quiz {
-        left: -20%;
-    }
-}
-
-@media screen and (max-height: 500px) {
-    .yellow-blob-quiz {
-        transition: top 1s;
-        top: -40%;
-    }
 }
 
 /* Question screen */
@@ -132,12 +120,14 @@ p {
 
 .question-text {
     font-size: 2.3vh;
+    transition: font-size 0.6s;
 }
 
 .ans-btn {
     margin-right: 1em;
     font-size: 1.6vh;
     cursor: pointer;
+    transition: font-size 0.6s;
 }
 
 .ans-selected {
@@ -146,4 +136,33 @@ p {
 
 .ans-btn:hover {
     background-color: rgb(204, 135, 182);
+}
+
+@media screen and (max-width: 700px) {
+    .pink-blob-quiz {
+        left: -20%;
+    }
+}
+
+@media screen and (max-height: 500px) {
+    .yellow-blob-quiz {
+        transition: top 1s;
+        top: -40%;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .btn {
+        font-size: 1.4vh;
+    }
+
+    .question-text {
+        font-size: 1.5vh;
+    }
+
+    .ans-btn {
+        margin-right: 1em;
+        font-size: 1.5vh;
+        cursor: pointer;
+    }
 }
